@@ -1,16 +1,74 @@
-# React + Vite
+# React Context API Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A small React application that demonstrates sharing state between components with the Context API. Three card components read and update one counter without receiving the state through props.
 
-Currently, two official plugins are available:
+## What it demonstrates
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Creating a context with `createContext`
+- Providing shared state from the root component
+- Reading context values in nested components with `useContext`
+- Updating shared state from any card button
 
-## React Compiler
+Each card has its own button. Selecting any button increments the counter displayed at the top of the page.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the Oxlint configuration
+- React 19
+- Vite 8
+- Oxlint
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Getting started
+
+Prerequisites: install a current LTS version of [Node.js](https://nodejs.org/).
+
+```bash
+npm install
+npm run dev
+```
+
+Vite will print a local URL (normally `http://localhost:5173`) to open in your browser.
+
+## Available scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server. |
+| `npm run build` | Create a production build. |
+| `npm run preview` | Preview the production build locally. |
+| `npm run lint` | Run Oxlint checks. |
+
+## Project structure
+
+```text
+src/
+├── App.jsx                     # Owns and provides the shared counter state
+├── components/
+│   ├── Context.jsx             # Creates the application context
+│   ├── buttons/Button.jsx      # Reusable button component
+│   └── cards/Card.jsx          # Consumes context and increments the counter
+├── App.css                     # Application styles
+├── index.css                   # Global styles
+└── main.jsx                    # React entry point
+```
+
+## How the shared state flows
+
+`App` keeps the counter in `useState` and exposes both `count` and `setCount` through `Context.Provider`. Every `Card` calls `useContext(Context)` to access those values. This avoids passing the counter and its update function through intermediate props.
+
+```jsx
+<Context.Provider value={{ count, setCount }}>
+  <Card name="Vijay" />
+</Context.Provider>
+```
+
+Inside a card, the button updates the same shared value:
+
+```jsx
+const { count, setCount } = useContext(Context)
+
+<Button onClick={() => setCount(count + 1)} />
+```
+
+## License
+
+This project is intended for learning and experimentation.
