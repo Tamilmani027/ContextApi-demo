@@ -9,12 +9,13 @@ import Context from './components/Context'
 
 function App(){
 
-  let city='Bengaluru';
+  const [count,setCount]=useState(0);
 
   return (
     <>
-    <Context.Provider value={city}>
-    <div className='cards'>     
+    <Context.Provider value={{count,setCount}}>
+    <h1>{count}</h1>  
+    <div className='cards'>   
     <Card name="Vijay" email="vijay@gmail.com" btn='btn1'></Card>
     <Card name="Vikram" email="vikram@gmail.com" btn='btn2'></Card>
     <Card name="Vishal" email="vishal@gmail.com" btn='btn3'></Card>
